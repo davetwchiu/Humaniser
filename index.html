@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Humaniser</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Humaniser</h1>
+      <p class="subtitle">Paste AI text and rewrite it to feel more natural and human.</p>
+
+      <section class="card">
+        <label for="model">Model (free-tier OpenRouter model ID)</label>
+        <input id="model" type="text" value="meta-llama/llama-3.1-8b-instruct:free" autocomplete="off" />
+
+        <label for="inputText">AI Generated Text</label>
+        <textarea id="inputText" rows="10" placeholder="Paste text here..."></textarea>
+
+        <div class="actions">
+          <button id="humaniseBtn">Humanise Text</button>
+          <button id="copyBtn" class="secondary">Copy Output</button>
+        </div>
+
+        <label for="outputText">Humanised Output</label>
+        <textarea id="outputText" rows="10" readonly placeholder="Your rewritten text will appear here..."></textarea>
+
+        <p id="status" class="status" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
