@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "humaniser",
+  "name": "humaniser-api",
   "compatibility_date": "2025-09-27",
   "observability": {
     "enabled": true
