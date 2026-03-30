@@ -3,7 +3,7 @@ export async function onRequestPost(context) {
   const origin = request.headers.get("Origin") || "";
 
   const ALLOWED_ORIGINS = [
-    "https://YOUR_GITHUB_USERNAME.github.io",
+    "https://davetwchiu.github.io",
     "http://127.0.0.1:5500",
     "http://localhost:5500",
     "http://localhost:3000"
