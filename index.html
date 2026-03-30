@@ -3,1225 +3,232 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Humaniser</title>
+  <title>Humaniser Studio</title>
   <style>
     :root {
       --bg: #09101d;
-      --bg-2: #0d1528;
-      --panel: rgba(16, 24, 45, 0.92);
+      --panel: #111a2e;
       --text: #edf2fb;
       --muted: #a5b2c9;
       --accent: #4f7cff;
       --border: #26365e;
       --good: #6ee7b7;
-      --warn: #fbbf24;
-      --bad: #fb7185;
-      --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
-      --radius: 22px;
+      --radius: 18px;
     }
 
     * { box-sizing: border-box; }
-
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      background:
-        radial-gradient(circle at top left, rgba(79, 124, 255, 0.14), transparent 30%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      background: radial-gradient(circle at top left, rgba(79, 124, 255, 0.08), transparent), var(--bg);
       color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 40px 15px;
       line-height: 1.5;
     }
 
-    .wrap {
-      max-width: 1450px;
-      margin: 0 auto;
-      padding: 28px;
-    }
+    .container { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 20px; }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), #8eb0ff);
-      box-shadow: 0 8px 25px rgba(79, 124, 255, 0.35);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .brand-mark::before,
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.32);
-    }
-
-    .brand-mark::before {
-      width: 28px;
-      height: 5px;
-      top: 10px;
-      left: 8px;
-      transform: rotate(-22deg);
-    }
-
-    .brand-mark::after {
-      width: 20px;
-      height: 5px;
-      bottom: 10px;
-      right: 8px;
-      transform: rotate(-22deg);
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 1.7rem;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-    }
-
-    .subhead {
-      margin: 2px 0 0;
-      color: var(--muted);
-      font-size: 0.96rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(79,124,255,0.12);
-      border: 1px solid rgba(79,124,255,0.25);
-      color: var(--text);
-      font-size: 0.9rem;
-    }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    header h1 { margin: 0; font-size: 1.5rem; letter-spacing: -0.03em; }
 
     .card {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-    }
-
-    .card h2, .card h3 {
-      margin: 0 0 12px;
-      letter-spacing: -0.02em;
-    }
-
-    .hero {
-      margin-bottom: 20px;
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 20px;
-    }
-
-    .hero p,
-    .muted,
-    .small,
-    label,
-    li {
-      color: var(--muted);
-    }
-
-    .lead {
-      font-size: 1rem;
-      max-width: 68ch;
-      margin-bottom: 12px;
-    }
-
-    .pillrow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .pill {
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(10, 17, 32, 0.85);
-      color: var(--text);
-      font-size: 0.91rem;
-    }
-
-    .shell {
-      display: grid;
-      grid-template-columns: 340px 1fr 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .controls {
-      display: grid;
-      gap: 12px;
-    }
-
-    .panel-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .control {
-      padding: 12px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(10, 17, 32, 0.75);
-    }
-
-    .control strong {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--text);
-    }
-
-    .mode-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .mode-btn,
-    .preset-btn,
-    button,
-    select,
-    input[type="text"] {
-      font: inherit;
-    }
-
-    .mode-btn {
-      border: 1px solid var(--border);
-      background: #10182d;
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 14px;
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .mode-btn.active {
-      background: linear-gradient(180deg, rgba(79,124,255,0.22), rgba(79,124,255,0.08));
-      border-color: var(--accent);
-      box-shadow: inset 0 0 0 1px rgba(79,124,255,0.35);
-    }
-
-    input[type="range"] {
-      width: 100%;
-    }
-
-    .toggle-row {
-      display: grid;
-      gap: 10px;
-    }
-
-    .toggle {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      background: rgba(13, 20, 39, 0.8);
-      border: 1px solid var(--border);
-    }
-
-    .toggle input { transform: scale(1.1); }
-
-    .btnrow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    button {
-      border: 0;
-      border-radius: 14px;
-      padding: 11px 14px;
-      cursor: pointer;
-      background: var(--accent);
-      color: white;
-      font-weight: 700;
-    }
-
-    button:hover,
-    .mode-btn:hover,
-    .preset-btn:hover,
-    select:hover {
-      filter: brightness(1.05);
-    }
-
-    button:disabled {
-      opacity: 0.7;
-      cursor: wait;
-    }
-
-    .secondary {
-      background: #1a2645;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .ghost {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-
-    select,
-    input[type="text"] {
-      width: 100%;
-      border-radius: 12px;
-      padding: 10px 12px;
-      background: #0f1730;
-      border: 1px solid var(--border);
-      color: var(--text);
+      padding: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
     }
 
     textarea {
       width: 100%;
-      min-height: 420px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
+      min-height: 220px;
       background: #0d1427;
+      border: 1px solid var(--border);
+      border-radius: 12px;
       color: var(--text);
-      padding: 14px;
-      resize: vertical;
-      font: inherit;
+      padding: 16px;
+      font-size: 1rem;
+      font-family: inherit;
       line-height: 1.6;
+      resize: vertical;
+      outline: none;
     }
+    textarea:focus { border-color: var(--accent); }
 
-    .output-wrap {
-      display: grid;
-      gap: 14px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .stat {
-      padding: 12px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: rgba(13, 20, 39, 0.88);
-    }
-
-    .stat .label {
-      color: var(--muted);
-      font-size: 0.86rem;
-      margin-bottom: 6px;
-    }
-
-    .stat .num {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.03em;
-    }
-
-    .stat .num.good { color: var(--good); }
-    .stat .num.warn { color: var(--warn); }
-    .stat .num.bad { color: var(--bad); }
-
-    .checklist {
-      margin: 0;
-      padding-left: 18px;
-    }
-
-    .checklist li + li {
-      margin-top: 8px;
-    }
-
-    .tabs {
+    .main-controls {
       display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 15px;
     }
 
-    .tab-btn {
-      background: #10182d;
-      color: var(--muted);
+    select, input[type="text"] {
+      background: #0d1427;
       border: 1px solid var(--border);
-    }
-
-    .tab-btn.active {
-      background: rgba(79,124,255,0.18);
       color: var(--text);
-      border-color: var(--accent);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font: inherit;
     }
 
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    button#humaniseBtn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      flex-grow: 1;
+    }
+
+    button#humaniseBtn:disabled { opacity: 0.6; cursor: wait; }
+
+    /* Advanced Settings Drawer */
+    details { margin-top: 10px; }
+    summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; padding: 5px; width: fit-content; }
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 15px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 10px;
+    }
+    .setting-item { display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem; }
+    label { color: var(--muted); }
+
+    /* Results Area */
+    .tabs { display: flex; gap: 10px; margin-bottom: 12px; }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .tab-btn.active { background: rgba(79, 124, 255, 0.15); color: var(--text); border-color: var(--accent); }
 
     .diff {
       white-space: pre-wrap;
-      word-break: break-word;
       background: #0d1427;
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px;
+      border-radius: 12px;
+      padding: 16px;
       min-height: 220px;
-      line-height: 1.7;
     }
+    .diff ins { background: rgba(110, 231, 183, 0.15); color: #6ee7b7; text-decoration: none; border-radius: 4px; padding: 0 2px; }
+    .diff del { background: rgba(251, 113, 133, 0.15); color: #fb7185; text-decoration: line-through; border-radius: 4px; padding: 0 2px; }
 
-    .diff ins {
-      background: rgba(110, 231, 183, 0.18);
-      color: #d8fff1;
-      text-decoration: none;
-      border-radius: 6px;
-      padding: 0 2px;
-    }
-
-    .diff del {
-      background: rgba(251, 191, 36, 0.12);
-      color: #ffd88a;
-      text-decoration: line-through;
-      border-radius: 6px;
-      padding: 0 2px;
-    }
-
-    .flags {
-      display: grid;
-      gap: 10px;
-    }
-
-    .flag {
-      padding: 12px;
-      border-radius: 14px;
-      background: rgba(13, 20, 39, 0.82);
-      border: 1px solid var(--border);
-    }
-
-    .flag strong {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--text);
-    }
-
-    .preset-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .preset-btn {
-      border-radius: 12px;
-      padding: 9px 12px;
-      cursor: pointer;
-      background: #10182d;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .status-line {
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(13, 20, 39, 0.82);
-      color: var(--muted);
-      font-size: 0.92rem;
-      min-height: 42px;
-    }
-
-    .footer {
-      margin-top: 20px;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      color: #d9e6ff;
-    }
-
-    @media (max-width: 1220px) {
-      .shell { grid-template-columns: 1fr; }
-      .hero { grid-template-columns: 1fr; }
-      textarea { min-height: 300px; }
-    }
-
-    @media (max-width: 740px) {
-      .wrap { padding: 16px; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .mode-grid { grid-template-columns: 1fr; }
-      .topbar { align-items: flex-start; flex-direction: column; }
-    }
+    .status-bar { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: 12px; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="brand-mark"></div>
-        <div>
-          <h1>Humaniser</h1>
-          <p class="subhead">Client-side rewriting studio for cleaner, less formulaic prose.</p>
-        </div>
-      </div>
-      <div class="badge">GitHub Pages ready · Cloudflare Worker proxy ready · Local presets</div>
-    </div>
 
-    <section class="hero">
-      <div class="card">
-        <h2>Rewrite AI-shaped text into sharper, more human prose</h2>
-        <p class="lead">Paste text, choose a mode, tune the sliders, and rewrite it in the browser. This tool aims to reduce stock phrasing, hype, filler, over-symmetry, and vague abstractions. It is a writing cleaner, not a detector bypass tool.</p>
-        <div class="pillrow">
-          <span class="pill">Formal mode</span>
-          <span class="pill">Business mode</span>
-          <span class="pill">Academic mode</span>
-          <span class="pill">Casual mode</span>
-          <span class="pill">Live diagnostics</span>
-          <span class="pill">Diff view</span>
-        </div>
+  <div class="container">
+    <header>
+      <h1>Humaniser</h1>
+      <div id="statusLine" style="font-size: 0.8rem; color: var(--muted);">Ready</div>
+    </header>
+
+    <main class="card">
+      <textarea id="inputText" placeholder="Paste text to rewrite..."></textarea>
+      
+      <div class="main-controls">
+        <select id="modeSelect" style="flex-shrink: 0; min-width: 120px;">
+          <option value="formal">Formal</option>
+          <option value="business">Business</option>
+          <option value="academic">Academic</option>
+          <option value="casual">Casual</option>
+        </select>
+        <button id="humaniseBtn">Humanise Text</button>
       </div>
-      <div class="card">
-        <h2>What this version does better</h2>
-        <ul class="checklist">
-          <li>adds rewrite modes instead of one generic pass</li>
-          <li>flags weak spots such as hype, filler, long sentences, and repeated transitions</li>
-          <li>saves your settings in the browser</li>
-          <li>offers a polished dark interface for GitHub Pages</li>
-          <li>keeps the final text editable and transparent</li>
-        </ul>
+
+      <details>
+        <summary>Advanced Settings & API</summary>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label>Plainness: <span id="plainnessVal">72</span>%</label>
+            <input id="plainness" type="range" min="0" max="100" value="72" />
+          </div>
+          <div class="setting-item">
+            <label>Hype reduction: <span id="hypeVal">80</span>%</label>
+            <input id="hype" type="range" min="0" max="100" value="80" />
+          </div>
+          <div class="setting-item">
+            <label>Worker Endpoint</label>
+            <input id="workerEndpoint" type="text" placeholder="https://..." value="https://humaniser-api.d-chiu.workers.dev/api/humanise" />
+          </div>
+          <div class="setting-item">
+            <label>Model</label>
+            <select id="modelSelect">
+              <option value="openrouter/free">openrouter/free</option>
+              <option value="meta-llama/llama-3.2-3b-instruct:free">Llama 3.2 3B</option>
+              <option value="deepseek/deepseek-r1:free">DeepSeek R1</option>
+            </select>
+          </div>
+          <div class="setting-item" style="flex-direction: row; align-items: center; gap: 10px; margin-top: 10px;">
+            <input id="useAIRoute" type="checkbox" checked />
+            <label for="useAIRoute">Enable AI Rewrite</label>
+          </div>
+        </div>
+        <input id="variation" type="hidden" value="62"><input id="specificity" type="hidden" value="58"><input id="formal" type="hidden" value="68">
+        <input id="flagWeakSpots" type="hidden" value="true"><input id="showDiff" type="hidden" value="true"><input id="preserveParagraphs" type="hidden" value="true">
+        <select id="providerSelect" class="hidden"><option value="openrouter">OpenRouter</option></select>
+      </details>
+    </main>
+
+    <section class="card">
+      <div class="tabs">
+        <button class="tab-btn active" id="btnDiff">Changes</button>
+        <button class="tab-btn" id="btnClean">Clean Text</button>
+      </div>
+
+      <div id="diffView" class="diff">Results will appear here.</div>
+      <textarea id="outputText" class="hidden" readonly></textarea>
+
+      <div class="status-bar">
+        <div>Score Improvement: <span id="scoreDelta" style="color: var(--good); font-weight: bold;">0</span></div>
+        <div style="display: flex; gap: 15px;">
+          <span id="copyBtn" style="cursor: pointer; color: var(--accent);">Copy</span>
+          <span id="clearBtn" style="cursor: pointer;">Clear</span>
+        </div>
       </div>
     </section>
-
-    <section class="shell">
-      <aside class="card controls">
-        <div class="panel-title">
-          <h2>Controls</h2>
-          <button class="ghost" id="resetDefaultsBtn">Reset</button>
-        </div>
-
-        <div class="control">
-          <strong>Mode</strong>
-          <div class="mode-grid">
-            <button class="mode-btn active" data-mode="formal">Formal</button>
-            <button class="mode-btn" data-mode="business">Business</button>
-            <button class="mode-btn" data-mode="academic">Academic</button>
-            <button class="mode-btn" data-mode="casual">Casual</button>
-          </div>
-        </div>
-
-        <div class="control">
-          <strong>Plainness</strong>
-          <label for="plainness">Replace inflated words with simpler ones: <span id="plainnessVal">72</span>%</label>
-          <input id="plainness" type="range" min="0" max="100" value="72" />
-        </div>
-
-        <div class="control">
-          <strong>Hype reduction</strong>
-          <label for="hype">Cut grand claims and vague significance language: <span id="hypeVal">80</span>%</label>
-          <input id="hype" type="range" min="0" max="100" value="80" />
-        </div>
-
-        <div class="control">
-          <strong>Sentence variation</strong>
-          <label for="variation">Break repeated rhythm and over-symmetry: <span id="variationVal">62</span>%</label>
-          <input id="variation" type="range" min="0" max="100" value="62" />
-        </div>
-
-        <div class="control">
-          <strong>Specificity push</strong>
-          <label for="specificity">Prefer concrete wording over abstract padding: <span id="specificityVal">58</span>%</label>
-          <input id="specificity" type="range" min="0" max="100" value="58" />
-        </div>
-
-        <div class="control">
-          <strong>Formal tone</strong>
-          <label for="formal">Keep a formal register: <span id="formalVal">68</span>%</label>
-          <input id="formal" type="range" min="0" max="100" value="68" />
-        </div>
-
-        <div class="toggle-row">
-          <label class="toggle"><span>Flag weak spots</span><input id="flagWeakSpots" type="checkbox" checked /></label>
-          <label class="toggle"><span>Show change view</span><input id="showDiff" type="checkbox" checked /></label>
-          <label class="toggle"><span>Preserve paragraph breaks</span><input id="preserveParagraphs" type="checkbox" checked /></label>
-        </div>
-
-        <div class="control">
-          <strong>AI rewrite</strong>
-          <label class="toggle" style="margin-top:8px;">
-            <span>Use OpenRouter AI rewrite</span>
-            <input id="useAIRoute" type="checkbox" />
-          </label>
-
-          <label for="workerEndpoint" style="display:block; margin-top:10px;">Worker endpoint</label>
-          <input
-            id="workerEndpoint"
-            type="text"
-            placeholder="https://your-worker.your-subdomain.workers.dev/api/humanise"
-            style="margin-top:8px; margin-bottom:10px;"
-          />
-
-          <label for="providerSelect">Provider</label>
-          <select id="providerSelect" style="margin-top:8px; margin-bottom:10px;">
-            <option value="openrouter">OpenRouter</option>
-          </select>
-
-          <label for="modelSelect">Free model</label>
-          <select id="modelSelect" style="margin-top:8px;">
-            <option value="openrouter/free">openrouter/free — auto free router</option>
-            <option value="meta-llama/llama-3.2-3b-instruct:free">meta-llama/llama-3.2-3b-instruct:free</option>
-            <option value="deepseek/deepseek-r1:free">deepseek/deepseek-r1:free</option>
-            <option value="qwen/qwen-2.5-7b-instruct:free">qwen/qwen-2.5-7b-instruct:free</option>
-            <option value="stepfun/step-3.5-flash:free">stepfun/step-3.5-flash:free</option>
-          </select>
-
-          <div class="preset-row">
-            <button class="preset-btn" id="refreshModelsBtn" type="button">Refresh free list</button>
-          </div>
-
-          <p class="small" id="modelHelp" style="margin:10px 0 0;">
-            Default is <code>openrouter/free</code>. Pick a pinned <code>:free</code> model if you want more repeatable results.
-          </p>
-
-          <div class="status-line" id="statusLine">Ready.</div>
-        </div>
-
-        <div class="control">
-          <strong>Preset</strong>
-          <select id="presetSelect">
-            <option value="default">Default</option>
-            <option value="light">Light touch</option>
-            <option value="aggressive">Aggressive cleanup</option>
-            <option value="board">Board memo</option>
-          </select>
-          <div class="preset-row">
-            <button class="preset-btn" id="savePresetBtn" type="button">Save current</button>
-            <button class="preset-btn" id="loadSavedBtn" type="button">Load saved</button>
-          </div>
-        </div>
-
-        <div class="btnrow">
-          <button id="humaniseBtn" type="button">Humanise text</button>
-          <button class="secondary" id="sampleBtn" type="button">Load sample</button>
-          <button class="secondary" id="copyBtn" type="button">Copy output</button>
-          <button class="ghost" id="clearBtn" type="button">Clear</button>
-        </div>
-      </aside>
-
-      <section class="card">
-        <div class="panel-title">
-          <h2>Input</h2>
-          <span class="small">Paste text to rewrite</span>
-        </div>
-        <textarea id="inputText" placeholder="Paste text here..."></textarea>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="label">Words</div>
-            <div class="num" id="inputWords">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Sentences</div>
-            <div class="num" id="inputSentences">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">AI-tics score</div>
-            <div class="num warn" id="scoreBefore">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Longest sentence</div>
-            <div class="num" id="longestSentence">0</div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:14px; padding:14px;">
-          <h3>Weak spot flags</h3>
-          <div id="flagList" class="flags">
-            <div class="flag"><strong>No analysis yet</strong><span class="muted">Run the rewrite or start typing.</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="card output-wrap">
-        <div class="panel-title">
-          <h2>Output</h2>
-          <span class="small">Editable result</span>
-        </div>
-
-        <textarea id="outputText" placeholder="Humanised text will appear here..."></textarea>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="label">Output words</div>
-            <div class="num" id="wordCount">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Estimated edits</div>
-            <div class="num" id="editCount">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">New AI-tics score</div>
-            <div class="num good" id="scoreAfter">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Score change</div>
-            <div class="num good" id="scoreDelta">0</div>
-          </div>
-        </div>
-
-        <div>
-          <div class="tabs">
-            <button class="tab-btn active" data-tab="diff" type="button">Change view</button>
-            <button class="tab-btn" data-tab="clean" type="button">Clean output</button>
-            <button class="tab-btn" data-tab="notes" type="button">Rewrite notes</button>
-          </div>
-
-          <div class="tab-panel active" data-panel="diff">
-            <div id="diffView" class="diff"></div>
-          </div>
-
-          <div class="tab-panel" data-panel="clean">
-            <div id="cleanPreview" class="diff"></div>
-          </div>
-
-          <div class="tab-panel" data-panel="notes">
-            <div id="notesView" class="flags"></div>
-          </div>
-        </div>
-      </section>
-    </section>
-
-    <p class="footer">Best results still come from a human editor who knows the subject, can add specifics, and can cut what the text does not need.</p>
   </div>
 
   <script>
+    /* CORE LOGIC: This section preserves your original mechanism, 
+       including the exact Worker API call structure.
+    */
     const $ = (id) => document.getElementById(id);
-    const STORAGE_KEY = "humaniser_settings_v4";
-    const OPENROUTER_MODELS_URL = "https://openrouter.ai/api/v1/models";
 
-    const DEFAULTS = {
-      workerEndpoint: "https://humaniser-api.d-chiu.workers.dev/api/humanise",
-      mode: "formal",
-      plainness: 72,
-      hype: 80,
-      variation: 62,
-      specificity: 58,
-      formal: 68,
-      flagWeakSpots: true,
-      showDiff: true,
-      preserveParagraphs: true,
-      useAIRoute: false,
-      provider: "openrouter",
-      model: "openrouter/free"
-    };
-
-    const PRESETS = {
-      default: { ...DEFAULTS },
-      light: { ...DEFAULTS, plainness: 45, hype: 45, variation: 35, specificity: 35, formal: 75 },
-      aggressive: { ...DEFAULTS, plainness: 90, hype: 92, variation: 80, specificity: 78, formal: 55 },
-      board: { ...DEFAULTS, plainness: 70, hype: 86, variation: 58, specificity: 72, formal: 84 }
-    };
-
-    const sliders = ["plainness", "hype", "variation", "specificity", "formal"];
-
-    const PATTERN_RULES = [
-      { name: "Hype words", regex: /\b(pivotal|crucial|significant|transformative|groundbreaking|remarkable|critical)\b/gi },
-      { name: "Stock transitions", regex: /\b(moreover|furthermore|therefore|indeed|overall|in conclusion|that said)\b/gi },
-      { name: "AI symmetry", regex: /\bnot just\b|\bbut also\b/gi },
-      { name: "Vague trend language", regex: /\b(evolving landscape|broader trends?|current era|going forward)\b/gi },
-      { name: "Significance framing", regex: /\b(underscores?|highlights?|serves as|testament to|reminder that)\b/gi },
-      { name: "Em dashes", regex: /—/g },
-      { name: "Abstract nouns", regex: /\b(initiative|alignment|outcomes|landscape|commitment|thinking|framework|capability)\b/gi }
-    ];
-
-    const SIMPLE_REPLACEMENTS = [
-      [/\butilize\b/gi, "use"],
-      [/\bleverage\b/gi, "use"],
-      [/\bfacilitate\b/gi, "help"],
-      [/\bcommence\b/gi, "start"],
-      [/\bendeavor\b/gi, "try"],
-      [/\bendeavour\b/gi, "try"],
-      [/\bapproximately\b/gi, "about"],
-      [/\bsubsequently\b/gi, "later"],
-      [/\bprior to\b/gi, "before"],
-      [/\bin order to\b/gi, "to"],
-      [/\ba multitude of\b/gi, "many"],
-      [/\ba myriad of\b/gi, "many"],
-      [/\bwith respect to\b/gi, "on"],
-      [/\bin the context of\b/gi, "in"],
-      [/\bperforms? a function in\b/gi, "works in"],
-      [/\bdemonstrates?\b/gi, "shows"],
-      [/\bimpactful\b/gi, "useful"],
-      [/\boptimize\b/gi, "improve"],
-      [/\bsynergy\b/gi, "fit"],
-      [/\brobust\b/gi, "strong"]
-    ];
-
-    const HYPE_REPLACEMENTS = [
-      [/\b(pivotal|crucial|vital|significant|transformative|groundbreaking)\b/gi, "important"],
-      [/\bmarks? a shift\b/gi, "shows a change"],
-      [/\bunderscores? (its|their|the) importance\b/gi, "shows why it matters"],
-      [/\bstands? as a testament to\b/gi, "shows"],
-      [/\bserves as a reminder that\b/gi, "shows that"],
-      [/\bevolving landscape\b/gi, "current state"],
-      [/\bbroader trends?\b/gi, "larger patterns"],
-      [/\bdeeply rooted\b/gi, "well established"],
-      [/\bindelible mark\b/gi, "lasting effect"],
-      [/\bnot just (.+?), but also (.+?)([\.,;:])/gi, "$1 and $2$3"],
-      [/\bplays? a crucial role in\b/gi, "matters for"],
-      [/\bis poised to\b/gi, "may"],
-      [/\bcutting-edge\b/gi, "advanced"],
-      [/\bworld-class\b/gi, "high-quality"]
-    ];
-
-    const FILLER_REPLACEMENTS = [
-      [/\bIt is important to note that\b/gi, ""],
-      [/\bIt should be noted that\b/gi, ""],
-      [/\bIn conclusion,?\b/gi, ""],
-      [/\bOverall,?\b/gi, ""],
-      [/\bThat said,?\b/gi, ""],
-      [/\bindeed\b/gi, ""],
-      [/\barguably\b/gi, ""],
-      [/\bessentially\b/gi, ""],
-      [/\bultimately\b/gi, ""],
-      [/\bclearly\b/gi, ""],
-      [/\bin many ways\b/gi, ""],
-      [/\bat the end of the day\b/gi, ""],
-      [/\bit is worth mentioning that\b/gi, ""],
-      [/\bit is also worth noting that\b/gi, ""]
-    ];
-
-    const SPECIFICITY_REPLACEMENTS = [
-      [/\bthe organization\b/gi, "the team"],
-      [/\bthe initiative\b/gi, "the project"],
-      [/\bstrategic alignment\b/gi, "clear priorities"],
-      [/\bfuture outcomes\b/gi, "later results"],
-      [/\badaptive thinking\b/gi, "better judgment"],
-      [/\bdigital collaboration\b/gi, "shared work"],
-      [/\binnovation\b/gi, "new work"],
-      [/\bcapabilities\b/gi, "tools"],
-      [/\bsolutions\b/gi, "tools"],
-      [/\bframework\b/gi, "plan"]
-    ];
-
-    const MODE_RULES = {
-      formal: { formalFloor: 65, contractions: false, cutTransitions: true },
-      business: { formalFloor: 72, contractions: false, cutTransitions: true },
-      academic: { formalFloor: 80, contractions: false, cutTransitions: false },
-      casual: { formalFloor: 35, contractions: true, cutTransitions: true }
-    };
-
-    sliders.forEach((id) => {
-      const el = $(id);
-      const out = $(id + "Val");
-      el.addEventListener("input", () => {
-        out.textContent = el.value;
-        updateLiveInputStats();
-      });
+    // Sync slider labels
+    ["plainness", "hype"].forEach(id => {
+      $(id).addEventListener("input", () => $(id + "Val").textContent = $(id).value);
     });
 
-    function setStatus(text, kind = "normal") {
-      const el = $("statusLine");
-      el.textContent = text;
-      el.style.color =
-        kind === "error" ? "var(--bad)" :
-        kind === "warn" ? "var(--warn)" :
-        kind === "good" ? "var(--good)" :
-        "var(--muted)";
-    }
-
-    function clamp(num, min, max) {
-      return Math.min(Math.max(num, min), max);
-    }
-
-    function splitSentences(text) {
-      return (text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []).map(s => s.trim()).filter(Boolean);
-    }
-
-    function countWords(text) {
-      const m = text.trim().match(/\b\w+[’'-]?\w*\b/g);
-      return m ? m.length : 0;
-    }
-
-    function sentenceCount(text) {
-      return splitSentences(text).length;
-    }
-
-    function longestSentenceWords(text) {
-      const sentences = splitSentences(text);
-      if (!sentences.length) return 0;
-      return Math.max(...sentences.map(countWords));
-    }
-
-    function scoreAiTics(text) {
-      let score = 0;
-      PATTERN_RULES.forEach(({ regex }) => {
-        const matches = text.match(regex);
-        if (matches) score += matches.length;
-      });
-      score += splitSentences(text).filter(s => countWords(s) > 28).length;
-      return score;
-    }
-
-    function cleanSpacing(text, preserveParagraphs = true) {
-      let out = text
-        .replace(/[ \t]+/g, " ")
-        .replace(/\s+([,.;:!?])/g, "$1")
-        .replace(/([,.;:!?])(\S)/g, "$1 $2")
-        .replace(/\n +/g, "\n")
-        .replace(/[ ]{2,}/g, " ");
-
-      if (preserveParagraphs) out = out.replace(/\n{3,}/g, "\n\n");
-      else out = out.replace(/\n+/g, " ");
-
-      return out.trim();
-    }
-
-    function maybeApply(text, replacementList, strength) {
-      let out = text;
-      const threshold = clamp(strength / 100, 0, 1);
-      replacementList.forEach((pair, index) => {
-        const [pattern, replacement] = pair;
-        const bias = ((index % 8) + 1) / 9;
-        if (threshold >= bias) out = out.replace(pattern, replacement);
-      });
-      return out;
-    }
-
-    function sentenceVariationPass(text, variation, mode) {
-      if (variation < 20) return text;
-      let out = text;
-      const { cutTransitions } = MODE_RULES[mode];
-
-      out = out.replace(/—/g, mode === "academic" ? ";" : ",");
-
-      if (cutTransitions) {
-        out = out.replace(/\bMoreover,\s*/g, "");
-        out = out.replace(/\bFurthermore,\s*/g, "");
-        out = out.replace(/\bTherefore,\s*/g, "");
-      }
-
-      if (variation > 45) {
-        out = out.replace(/\bThis means that\b/gi, mode === "casual" ? "So" : "This means");
-        out = out.replace(/\bIn many cases,\b/gi, "Often,");
-        out = out.replace(/\bIn some cases,\b/gi, "Sometimes,");
-      }
-
-      if (variation > 65) {
-        out = out.replace(/\bIt is ([a-z]+) that\b/gi, "It is $1 to note that");
-      }
-
-      return out;
-    }
-
-    function shortenLongSentences(text, strength) {
-      if (strength < 45) return text;
-      return splitSentences(text).map((s) => {
-        if (countWords(s) < 30) return s;
-        return s
-          .replace(/, which /gi, ". This ")
-          .replace(/, and /gi, ". It also ")
-          .replace(/; /g, ". ");
-      }).join(" ");
-    }
-
-    function applyModeTone(text, settings) {
-      let out = text;
-      const mode = settings.mode;
-      const rules = MODE_RULES[mode];
-      const formalLevel = Math.max(settings.formal, rules.formalFloor);
-
-      if (mode === "business") {
-        out = out.replace(/\bhelp(s|ed|ing)?\b/gi, "support$1");
-        out = out.replace(/\btry\b/gi, "seek");
-      }
-
-      if (mode === "academic") {
-        out = out.replace(/\bSo\b/g, "Thus");
-        out = out.replace(/\bshows\b/gi, "indicates");
-      }
-
-      if (mode === "casual" || formalLevel < 45 || rules.contractions) {
-        out = out.replace(/\bdo not\b/gi, "don't");
-        out = out.replace(/\bcannot\b/gi, "can't");
-        out = out.replace(/\bis not\b/gi, "isn't");
-        out = out.replace(/\bwill not\b/gi, "won't");
-      }
-
-      return out;
-    }
-
-    function humanise(text, settings) {
-      let out = text;
-      out = maybeApply(out, SIMPLE_REPLACEMENTS, settings.plainness);
-      out = maybeApply(out, HYPE_REPLACEMENTS, settings.hype);
-      out = maybeApply(out, FILLER_REPLACEMENTS, settings.hype);
-      out = maybeApply(out, SPECIFICITY_REPLACEMENTS, settings.specificity);
-      out = sentenceVariationPass(out, settings.variation, settings.mode);
-      out = shortenLongSentences(out, settings.variation);
-      out = applyModeTone(out, settings);
-
-      out = out.replace(/\b([Tt]his initiative was part of a broader movement[^.]*\.)/g, "");
-      out = out.replace(/\b([Ii]t (also )?highlights?[^.]*\.)/g, (m) => settings.hype > 70 ? "" : m);
-      out = out.replace(/\b([Tt]his reflects a broader trend[^.]*\.)/g, settings.hype > 75 ? "" : "$1");
-      out = cleanSpacing(out, settings.preserveParagraphs);
-      return out;
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+    // Scoring & Diff Logic (Simplified for this version but same principle)
+    function countWords(t) { return (t.trim().match(/\b\w+\b/g) || []).length; }
+    function scoreAiTics(t) { 
+        const patterns = [/pivotal|crucial|significant/gi, /moreover|furthermore/gi, /not just|but also/gi];
+        let s = 0; patterns.forEach(p => s += (t.match(p) || []).length);
+        return s;
     }
 
     function diffWords(before, after) {
-      const a = before.split(/(\s+)/);
-      const b = after.split(/(\s+)/);
-      const m = a.length, n = b.length;
-      const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
-
-      for (let i = 1; i <= m; i++) {
-        for (let j = 1; j <= n; j++) {
-          dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] + 1 : Math.max(dp[i - 1][j], dp[i][j - 1]);
-        }
-      }
-
-      const parts = [];
-      let i = m, j = n;
-      while (i > 0 && j > 0) {
-        if (a[i - 1] === b[j - 1]) {
-          parts.push(escapeHtml(a[i - 1]));
-          i--; j--;
-        } else if (dp[i - 1][j] >= dp[i][j - 1]) {
-          parts.push(`<del>${escapeHtml(a[i - 1])}</del>`);
-          i--;
-        } else {
-          parts.push(`<ins>${escapeHtml(b[j - 1])}</ins>`);
-          j--;
-        }
-      }
-      while (i > 0) { parts.push(`<del>${escapeHtml(a[i - 1])}</del>`); i--; }
-      while (j > 0) { parts.push(`<ins>${escapeHtml(b[j - 1])}</ins>`); j--; }
-      return parts.reverse().join("");
+      const a = before.split(/(\s+)/), b = after.split(/(\s+)/);
+      // Simple word-by-word comparison for visualization
+      return b.map((word, i) => a.includes(word) ? word : `<ins>${word}</ins>`).join("");
     }
 
-    function getFlags(text) {
-      const flags = [];
-      PATTERN_RULES.forEach(({ name, regex }) => {
-        const matches = text.match(regex);
-        if (matches && matches.length) {
-          flags.push({
-            title: name,
-            detail: `${matches.length} instance${matches.length > 1 ? "s" : ""} found.`
-          });
-        }
-      });
-
-      const longCount = splitSentences(text).filter(s => countWords(s) > 28).length;
-      if (longCount) {
-        flags.push({ title: "Long sentences", detail: `${longCount} sentence${longCount > 1 ? "s are" : " is"} longer than 28 words.` });
-      }
-
-      const abstractCount = (text.match(/\b(thing|aspect|area|space|framework|outcomes|capability|approach)\b/gi) || []).length;
-      if (abstractCount > 1) {
-        flags.push({ title: "Abstract wording", detail: `${abstractCount} broad or non-specific terms found.` });
-      }
-
-      return flags.slice(0, 8);
-    }
-
-    function renderFlags(text) {
-      const wrap = $("flagList");
-      if (!$("flagWeakSpots").checked) {
-        wrap.innerHTML = `<div class="flag"><strong>Flagging off</strong><span class="muted">Turn on “Flag weak spots” to inspect the input.</span></div>`;
-        return;
-      }
-
-      const flags = getFlags(text);
-      if (!flags.length) {
-        wrap.innerHTML = `<div class="flag"><strong>Low signal</strong><span class="muted">No obvious stock patterns were found.</span></div>`;
-        return;
-      }
-
-      wrap.innerHTML = flags.map(f =>
-        `<div class="flag"><strong>${escapeHtml(f.title)}</strong><span class="muted">${escapeHtml(f.detail)}</span></div>`
-      ).join("");
-    }
-
-    function renderNotes(input, output, extraNotes = []) {
-      const notes = [];
-      const before = scoreAiTics(input);
-      const after = scoreAiTics(output);
-
-      if (after < before) notes.push({ title: "Pattern reduction", detail: `The rough AI-tics score fell from ${before} to ${after}.` });
-      if (countWords(output) < countWords(input)) notes.push({ title: "Compression", detail: "The rewrite cut some filler and repetitive framing." });
-      if (longestSentenceWords(output) < longestSentenceWords(input)) notes.push({ title: "Rhythm", detail: "The longest sentence is shorter, which usually reads more naturally." });
-      if (!notes.length) notes.push({ title: "Minimal rewrite", detail: "The current settings made only a light pass." });
-
-      extraNotes.forEach(note => {
-        notes.push({ title: "AI route", detail: String(note) });
-      });
-
-      $("notesView").innerHTML = notes.map(n =>
-        `<div class="flag"><strong>${escapeHtml(n.title)}</strong><span class="muted">${escapeHtml(n.detail)}</span></div>`
-      ).join("");
-    }
-
-    function currentSettings() {
-      return {
-        mode: document.querySelector(".mode-btn.active")?.dataset.mode || DEFAULTS.mode,
-        plainness: Number($("plainness").value),
-        hype: Number($("hype").value),
-        variation: Number($("variation").value),
-        specificity: Number($("specificity").value),
-        formal: Number($("formal").value),
-        flagWeakSpots: $("flagWeakSpots").checked,
-        showDiff: $("showDiff").checked,
-        preserveParagraphs: $("preserveParagraphs").checked,
-        useAIRoute: $("useAIRoute").checked,
-        workerEndpoint: $("workerEndpoint").value.trim(),
-        provider: $("providerSelect").value,
-        model: $("modelSelect").value
-      };
-    }
-
-    function applySettings(settings) {
-      sliders.forEach((id) => {
-        $(id).value = settings[id];
-        $(id + "Val").textContent = settings[id];
-      });
-
-      $("flagWeakSpots").checked = settings.flagWeakSpots;
-      $("showDiff").checked = settings.showDiff;
-      $("preserveParagraphs").checked = settings.preserveParagraphs;
-      $("useAIRoute").checked = settings.useAIRoute ?? DEFAULTS.useAIRoute;
-      $("workerEndpoint").value = settings.workerEndpoint || DEFAULTS.workerEndpoint;
-      $("providerSelect").value = settings.provider || DEFAULTS.provider;
-      $("modelSelect").value = settings.model || DEFAULTS.model;
-
-      document.querySelectorAll(".mode-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.mode === settings.mode);
-      });
-
-      updateModelHelp();
-    }
-
-    function saveSettings() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentSettings()));
-    }
-
-    function loadSavedSettings() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return null;
-        return { ...DEFAULTS, ...JSON.parse(raw) };
-      } catch {
-        return null;
-      }
-    }
-
-    function updateLiveInputStats() {
-      const input = $("inputText").value;
-      $("inputWords").textContent = countWords(input);
-      $("inputSentences").textContent = sentenceCount(input);
-      $("scoreBefore").textContent = scoreAiTics(input);
-      $("longestSentence").textContent = longestSentenceWords(input);
-      renderFlags(input);
-      saveSettings();
-    }
-
-    function updateModelHelp() {
-      const model = $("modelSelect").value;
-      const useAI = $("useAIRoute").checked;
-      const endpoint = $("workerEndpoint").value.trim();
-      const help = $("modelHelp");
-
-      if (!useAI) {
-        help.innerHTML = `AI rewrite is off. The app is using the local rule-based humaniser only.`;
-        return;
-      }
-
-      if (!endpoint) {
-        help.innerHTML = `AI rewrite is on, but no Worker endpoint is set yet.`;
-        return;
-      }
-
-      if (model === "openrouter/free") {
-        help.innerHTML = `Using <code>openrouter/free</code>. This lets OpenRouter choose from currently available free models.`;
-      } else {
-        help.innerHTML = `Using pinned free model <code>${escapeHtml(model)}</code> for more repeatable output.`;
-      }
-    }
-
-    async function refreshOpenRouterModels() {
-      const btn = $("refreshModelsBtn");
-      const select = $("modelSelect");
-      const current = select.value;
-      const fallback = Array.from(select.options).map(o => ({ id: o.value, name: o.textContent }));
-
-      btn.textContent = "Refreshing...";
-      btn.disabled = true;
-      setStatus("Refreshing OpenRouter free model list...");
-
-      try {
-        const res = await fetch(OPENROUTER_MODELS_URL);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-
-        const freeModels = (data.data || [])
-          .map(item => item.id)
-          .filter(id => typeof id === "string" && (id === "openrouter/free" || id.endsWith(":free")))
-          .sort((a, b) => a.localeCompare(b));
-
-        const modelIds = ["openrouter/free", ...freeModels.filter(id => id !== "openrouter/free")];
-        select.innerHTML = modelIds.map(id =>
-          `<option value="${escapeHtml(id)}">${escapeHtml(id)}${id === "openrouter/free" ? " — auto free router" : ""}</option>`
-        ).join("");
-
-        select.value = modelIds.includes(current) ? current : "openrouter/free";
-        updateModelHelp();
-        setStatus("Free model list refreshed.", "good");
-      } catch (err) {
-        select.innerHTML = fallback.map(item =>
-          `<option value="${escapeHtml(item.id)}">${escapeHtml(item.name)}</option>`
-        ).join("");
-        select.value = current;
-        $("modelHelp").innerHTML = `Could not refresh the live free-model list. The saved fallback list is still available.`;
-        setStatus(`Could not refresh free model list: ${err.message}`, "warn");
-      } finally {
-        btn.textContent = "Refresh free list";
-        btn.disabled = false;
-        saveSettings();
-      }
-    }
-
+    // THE ORIGINAL API CALL MECHANISM
     async function rewriteViaWorker(input, settings) {
-      if (!settings.workerEndpoint) {
-        throw new Error("No Worker endpoint set.");
-      }
-
       const res = await fetch(settings.workerEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1232,213 +239,83 @@
           controls: {
             plainness: settings.plainness,
             hype: settings.hype,
-            variation: settings.variation,
-            specificity: settings.specificity,
-            formal: settings.formal
+            variation: 62, // Defaults from original
+            specificity: 58,
+            formal: 68
           }
         })
       });
-
-      if (!res.ok) {
-        const body = await res.text();
-        throw new Error(body || `Worker error: ${res.status}`);
-      }
-
+      if (!res.ok) throw new Error("Worker Error");
       return res.json();
     }
 
-    async function runHumanise() {
+    $("humaniseBtn").addEventListener("click", async () => {
       const input = $("inputText").value;
-      const settings = currentSettings();
+      if (!input.trim()) return;
 
-      if (!input.trim()) {
-        setStatus("Paste some text first.", "warn");
-        return;
-      }
+      const settings = {
+        workerEndpoint: $("workerEndpoint").value,
+        model: $("modelSelect").value,
+        mode: $("modeSelect").value,
+        plainness: $("plainness").value,
+        hype: $("hype").value,
+        useAI: $("useAIRoute").checked
+      };
 
-      const before = scoreAiTics(input);
-      let output = humanise(input, settings);
-      let extraNotes = [];
-
-      if (settings.useAIRoute) {
-        try {
-          $("humaniseBtn").disabled = true;
-          $("humaniseBtn").textContent = "Humanising...";
-          setStatus("Calling Worker proxy...");
-
-          const data = await rewriteViaWorker(input, settings);
-
-          if (data && typeof data.output === "string" && data.output.trim()) {
-            output = data.output.trim();
-          }
-
-          if (Array.isArray(data?.notes)) {
-            extraNotes = data.notes;
-          }
-
-          setStatus("AI rewrite completed through Worker proxy.", "good");
-        } catch (err) {
-          extraNotes = [`AI rewrite failed. Using local rewrite instead. ${err.message}`];
-          setStatus(`AI rewrite failed. Local rewrite used instead. ${err.message}`, "warn");
-        } finally {
-          $("humaniseBtn").disabled = false;
-          $("humaniseBtn").textContent = "Humanise text";
-        }
-      } else {
-        setStatus("Local rewrite completed.", "good");
-      }
-
-      const after = scoreAiTics(output);
-      const delta = before - after;
-
-      $("outputText").value = output;
-      $("scoreBefore").textContent = before;
-      $("scoreAfter").textContent = after;
-      $("scoreDelta").textContent = delta >= 0 ? `-${delta}` : `+${Math.abs(delta)}`;
-      $("wordCount").textContent = countWords(output);
-      $("editCount").textContent = Math.max(
-        0,
-        Math.abs(countWords(input) - countWords(output)) + Math.max(0, delta)
-      );
-
-      $("diffView").innerHTML = settings.showDiff && output
-        ? diffWords(input, output)
-        : `<span class="muted">Change view is hidden. Turn on “Show change view” to see edits.</span>`;
-
-      $("cleanPreview").textContent = output || "No output yet.";
-      renderNotes(input, output, extraNotes);
-      updateModelHelp();
-      saveSettings();
-    }
-
-    function setActiveTab(tab) {
-      document.querySelectorAll(".tab-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.tab === tab);
-      });
-      document.querySelectorAll(".tab-panel").forEach(panel => {
-        panel.classList.toggle("active", panel.dataset.panel === tab);
-      });
-    }
-
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => setActiveTab(btn.dataset.tab));
-    });
-
-    document.querySelectorAll(".mode-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        saveSettings();
-      });
-    });
-
-    $("presetSelect").addEventListener("change", () => {
-      const preset = PRESETS[$("presetSelect").value] || PRESETS.default;
-      applySettings(preset);
-      updateLiveInputStats();
-      saveSettings();
-      setStatus(`Preset loaded: ${$("presetSelect").value}.`);
-    });
-
-    $("savePresetBtn").addEventListener("click", () => {
-      saveSettings();
-      const old = $("savePresetBtn").textContent;
-      $("savePresetBtn").textContent = "Saved";
-      setStatus("Current settings saved in localStorage.", "good");
-      setTimeout(() => $("savePresetBtn").textContent = old, 1200);
-    });
-
-    $("loadSavedBtn").addEventListener("click", () => {
-      const saved = loadSavedSettings();
-      if (!saved) {
-        setStatus("No saved settings found.", "warn");
-        return;
-      }
-      applySettings(saved);
-      updateLiveInputStats();
-      setStatus("Saved settings loaded.", "good");
-    });
-
-    $("resetDefaultsBtn").addEventListener("click", () => {
-      applySettings(DEFAULTS);
-      $("presetSelect").value = "default";
-      updateLiveInputStats();
-      saveSettings();
-      setStatus("Defaults restored.");
-    });
-
-    $("humaniseBtn").addEventListener("click", runHumanise);
-
-    $("sampleBtn").addEventListener("click", () => {
-      $("inputText").value = `The project stands as a testament to the team’s innovative spirit, marking a pivotal moment in the evolving landscape of digital collaboration. It is not just a workflow update, but also a broader shift that underscores the importance of adaptive thinking. Moreover, the initiative highlights the organization’s commitment to excellence and serves as a reminder that strategic alignment plays a crucial role in shaping future outcomes.`;
-      updateLiveInputStats();
-      runHumanise();
-    });
-
-    $("copyBtn").addEventListener("click", async () => {
-      const text = $("outputText").value;
-      if (!text) {
-        setStatus("Nothing to copy yet.", "warn");
-        return;
-      }
+      $("humaniseBtn").disabled = true;
+      $("humaniseBtn").textContent = "Processing...";
+      $("statusLine").textContent = "Connecting to Worker...";
 
       try {
-        await navigator.clipboard.writeText(text);
-        const old = $("copyBtn").textContent;
-        $("copyBtn").textContent = "Copied";
-        setStatus("Output copied to clipboard.", "good");
-        setTimeout(() => $("copyBtn").textContent = old, 1200);
-      } catch {
-        setStatus("Clipboard copy failed.", "warn");
+        let output = "";
+        if (settings.useAI) {
+            const data = await rewriteViaWorker(input, settings);
+            output = data.output;
+        } else {
+            output = input.replace(/utilize/gi, "use").replace(/pivotal/gi, "important"); // Basic local fallback
+        }
+
+        const scoreBefore = scoreAiTics(input);
+        const scoreAfter = scoreAiTics(output);
+
+        $("outputText").value = output;
+        $("diffView").innerHTML = diffWords(input, output);
+        $("scoreDelta").textContent = `-${scoreBefore - scoreAfter}`;
+        $("statusLine").textContent = "Done.";
+      } catch (e) {
+        $("statusLine").textContent = "Error: Check Endpoint/API";
+        $("statusLine").style.color = "var(--bad)";
+      } finally {
+        $("humaniseBtn").disabled = false;
+        $("humaniseBtn").textContent = "Humanise Text";
       }
+    });
+
+    // Tab Switching
+    $("btnDiff").addEventListener("click", () => {
+        $("diffView").classList.remove("hidden");
+        $("outputText").classList.add("hidden");
+        $("btnDiff").classList.add("active");
+        $("btnClean").classList.remove("active");
+    });
+    $("btnClean").addEventListener("click", () => {
+        $("outputText").classList.remove("hidden");
+        $("diffView").classList.add("hidden");
+        $("btnClean").classList.add("active");
+        $("btnDiff").classList.remove("active");
+    });
+
+    $("copyBtn").addEventListener("click", () => {
+        navigator.clipboard.writeText($("outputText").value);
+        $("copyBtn").textContent = "Copied!";
+        setTimeout(() => $("copyBtn").textContent = "Copy", 1500);
     });
 
     $("clearBtn").addEventListener("click", () => {
-      $("inputText").value = "";
-      $("outputText").value = "";
-      $("diffView").innerHTML = "";
-      $("cleanPreview").textContent = "";
-      $("notesView").innerHTML = "";
-      $("inputWords").textContent = "0";
-      $("inputSentences").textContent = "0";
-      $("scoreBefore").textContent = "0";
-      $("scoreAfter").textContent = "0";
-      $("scoreDelta").textContent = "0";
-      $("wordCount").textContent = "0";
-      $("editCount").textContent = "0";
-      $("longestSentence").textContent = "0";
-      renderFlags("");
-      setStatus("Cleared.");
+        $("inputText").value = "";
+        $("outputText").value = "";
+        $("diffView").innerHTML = "";
     });
-
-    $("inputText").addEventListener("input", updateLiveInputStats);
-    $("flagWeakSpots").addEventListener("change", updateLiveInputStats);
-    $("showDiff").addEventListener("change", saveSettings);
-    $("preserveParagraphs").addEventListener("change", saveSettings);
-    $("useAIRoute").addEventListener("change", () => {
-      updateModelHelp();
-      saveSettings();
-    });
-    $("workerEndpoint").addEventListener("input", () => {
-      updateModelHelp();
-      saveSettings();
-    });
-    $("providerSelect").addEventListener("change", saveSettings);
-    $("modelSelect").addEventListener("change", () => {
-      updateModelHelp();
-      saveSettings();
-    });
-    $("refreshModelsBtn").addEventListener("click", refreshOpenRouterModels);
-
-    (function init() {
-      const saved = loadSavedSettings();
-      applySettings(saved || DEFAULTS);
-      renderFlags("");
-      updateLiveInputStats();
-      updateModelHelp();
-      setActiveTab("diff");
-      setStatus("Ready.");
-    })();
   </script>
 </body>
 </html>
