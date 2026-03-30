@@ -519,13 +519,15 @@
             <div class="control-group">
               <label for="modelSelect">Free model</label>
               <select id="modelSelect">
-                <option value="openrouter/free">openrouter/free</option>
-                 <option value="nvidia/nemotron-3-nano-30b-a3b:free">nvidia/nemotron-3-nano-30b-a3b:free</option>
-                <option value="meta-llama/llama-3.2-3b-instruct:free">meta-llama/llama-3.2-3b-instruct:free</option>
-                <option value="deepseek/deepseek-r1:free">deepseek/deepseek-r1:free</option>
-                <option value="qwen/qwen-2.5-7b-instruct:free">qwen/qwen-2.5-7b-instruct:free</option>
-                <option value="stepfun/step-3.5-flash:free">stepfun/step-3.5-flash:free</option>
-              </select>
+ 				 <option value="nvidia/nemotron-3-nano-30b-a3b:free">nvidia/nemotron-3-nano-30b-a3b:free</option>
+  				<option value="nvidia/nemotron-3-super-120b-a12b:free">nvidia/nemotron-3-super-120b-a12b:free</option>
+  				<option value="arcee-ai/trinity-large-preview:free">arcee-ai/trinity-large-preview:free</option>
+ 				<option value="z-ai/glm-4.5-air:free">z-ai/glm-4.5-air:free</option>
+  				<option value="arcee-ai/trinity-mini:free">arcee-ai/trinity-mini:free</option>
+  				<option value="stepfun/step-3.5-flash:free">stepfun/step-3.5-flash:free</option>
+  				<option value="meta-llama/llama-3.2-3b-instruct:free">meta-llama/llama-3.2-3b-instruct:free</option>
+  				<option value="openrouter/free">openrouter/free</option>
+			</select>
               <button class="preset-btn" id="refreshModelsBtn" type="button" style="margin-top: 5px;">Refresh free list</button>
               <p class="small" id="modelHelp" style="margin:5px 0 0;">Default is openrouter/free.</p>
             </div>
@@ -595,7 +597,7 @@
       preserveParagraphs: true,
       useAIRoute: false,
       provider: "openrouter",
-      model: "openrouter/free"
+      model: "nvidia/nemotron-3-nano-30b-a3b:free"
     };
 
     const PRESETS = {
