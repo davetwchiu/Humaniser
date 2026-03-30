@@ -529,7 +529,7 @@
   				<option value="openrouter/free">openrouter/free</option>
 			</select>
               <button class="preset-btn" id="refreshModelsBtn" type="button" style="margin-top: 5px;">Refresh free list</button>
-              <p class="small" id="modelHelp" style="margin:5px 0 0;">Default is openrouter/free.</p>
+              <p class="small" id="modelHelp" style="margin:5px 0 0;">Default is nvidia/nemotron-3-nano-30b-a3b:free.</p>
             </div>
 
             <div class="control-group" style="margin-top: 15px;">
@@ -962,9 +962,13 @@
         help.innerHTML = `AI rewrite is on, but no Worker endpoint is set.`;
         return;
       }
-      help.innerHTML = model === "openrouter/free"
-        ? `Using <code>openrouter/free</code> (auto routing).`
-        : `Using pinned free model <code>${escapeHtml(model)}</code>.`;
+      const DEFAULT_MODEL = "nvidia/nemotron-3-nano-30b-a3b:free";
+
+help.innerHTML = model === "openrouter/free"
+  ? `Using <code>openrouter/free</code> (auto routing, less consistent).`
+  : model === DEFAULT_MODEL
+    ? `Using default pinned model <code>${escapeHtml(model)}</code>.`
+    : `Using pinned free model <code>${escapeHtml(model)}</code>.`;
     }
 
     async function refreshOpenRouterModels() {
@@ -985,10 +989,18 @@
           .map(i => i.id)
           .filter(id => typeof id === "string" && (id === "openrouter/free" || id.endsWith(":free")))
           .sort((a, b) => a.localeCompare(b));
-        const modelIds = ["openrouter/free", ...freeModels.filter(id => id !== "openrouter/free")];
+        const DEFAULT_MODEL = "nvidia/nemotron-3-nano-30b-a3b:free";
 
-        select.innerHTML = modelIds.map(id => `<option value="${escapeHtml(id)}">${escapeHtml(id)}</option>`).join("");
-        select.value = modelIds.includes(current) ? current : "openrouter/free";
+const deduped = Array.from(new Set([
+  DEFAULT_MODEL,
+  ...freeModels.filter(id => id !== DEFAULT_MODEL)
+]));
+
+select.innerHTML = deduped
+  .map(id => `<option value="${escapeHtml(id)}">${escapeHtml(id)}</option>`)
+  .join("");
+
+select.value = deduped.includes(current) ? current : DEFAULT_MODEL;
         updateModelHelp();
         setStatus("Free model list refreshed.", "good");
       } catch (err) {
