@@ -20,37 +20,61 @@
       --radius: 18px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    html, body {
+    html {
       margin: 0;
       padding: 0;
+      min-height: 100%;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100%;
       background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.5;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
     }
 
-    /* Updated Wrapper for Fluid Width */
     .wrap {
-      width: 95%;
+      width: 100%;
       max-width: 1400px;
       margin: 0 auto;
-      padding: 40px 0;
+      padding: 40px 30px;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    /* Header */
-    .topbar { text-align: center; margin-bottom: 10px; }
-    .topbar h1 { margin: 0; font-size: 2rem; letter-spacing: -0.03em; }
-    .topbar p { color: var(--muted); margin-top: 5px; font-size: 0.95rem; }
+    @media (max-width: 768px) {
+      .wrap {
+        padding: 20px 16px;
+      }
+    }
 
-    /* Core Layout Elements */
+    .topbar {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: -0.03em;
+    }
+
+    .topbar p {
+      color: var(--muted);
+      margin-top: 5px;
+      font-size: 0.95rem;
+    }
+
     .card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -58,9 +82,10 @@
       padding: 20px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
+      width: 100%;
+      min-width: 0;
     }
 
-    /* Updated to wrap on small screens */
     .panel-title {
       display: flex;
       justify-content: space-between;
@@ -69,11 +94,17 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-    
-    .panel-title h2 { margin: 0; font-size: 1.1rem; }
-    .small { color: var(--muted); font-size: 0.85rem; }
 
-    /* Text Areas */
+    .panel-title h2 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
     textarea {
       width: 100%;
       min-height: 250px;
@@ -86,22 +117,29 @@
       font: inherit;
       line-height: 1.6;
       outline: none;
+      min-width: 0;
     }
-    textarea:focus { border-color: var(--accent); }
 
-    /* Updated Action Row to wrap */
+    textarea:focus {
+      border-color: var(--accent);
+    }
+
     .action-row {
       display: flex;
       gap: 12px;
       margin-top: 15px;
       flex-wrap: wrap;
     }
-    
-    .mode-btn, button, select, input[type="text"] { font: inherit; }
 
-    /* Updated Select to grow and fill space on wrap */
+    .mode-btn,
+    button,
+    select,
+    input[type="text"] {
+      font: inherit;
+    }
+
     .action-row select {
-      flex-grow: 1;
+      flex: 1 1 220px;
       width: auto;
       min-width: 140px;
       background: #0d1427;
@@ -113,7 +151,7 @@
     }
 
     button#humaniseBtn {
-      flex-grow: 1;
+      flex: 1 1 220px;
       border: 0;
       border-radius: 12px;
       padding: 12px 24px;
@@ -124,17 +162,26 @@
       font-size: 1.05rem;
       transition: filter 0.2s;
     }
-    button#humaniseBtn:hover { filter: brightness(1.1); }
-    button#humaniseBtn:disabled { opacity: 0.7; cursor: wait; }
 
-    /* Advanced Options Drawer */
+    button#humaniseBtn:hover {
+      filter: brightness(1.1);
+    }
+
+    button#humaniseBtn:disabled {
+      opacity: 0.7;
+      cursor: wait;
+    }
+
     details.advanced {
       margin-top: 15px;
       background: rgba(13, 20, 39, 0.4);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 14px;
+      width: 100%;
+      min-width: 0;
     }
+
     details.advanced > summary {
       cursor: pointer;
       color: var(--muted);
@@ -145,8 +192,11 @@
       align-items: center;
       gap: 8px;
     }
-    details.advanced > summary::before { content: "⚙️"; }
-    
+
+    details.advanced > summary::before {
+      content: "⚙️";
+    }
+
     .advanced-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -154,17 +204,46 @@
       margin-top: 15px;
       padding-top: 15px;
       border-top: 1px solid var(--border);
+      min-width: 0;
     }
-    @media (max-width: 600px) { .advanced-grid { grid-template-columns: 1fr; } }
 
-    .control-group { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; }
-    .control-group label { color: var(--muted); }
-    input[type="range"] { width: 100%; cursor: pointer; }
+    @media (max-width: 600px) {
+      .advanced-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
-    .toggle { display: flex; align-items: center; gap: 8px; color: var(--text); cursor: pointer; }
-    .toggle input { transform: scale(1.1); }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.85rem;
+      min-width: 0;
+    }
 
-    select, input[type="text"] {
+    .control-group label {
+      color: var(--muted);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .toggle input {
+      transform: scale(1.1);
+    }
+
+    select,
+    input[type="text"] {
       width: 100%;
       border-radius: 8px;
       padding: 8px 12px;
@@ -172,58 +251,172 @@
       border: 1px solid var(--border);
       color: var(--text);
       font-size: 0.9rem;
+      min-width: 0;
     }
 
-    .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-    .preset-btn, .secondary, .ghost {
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .preset-btn,
+    .secondary,
+    .ghost {
       border-radius: 8px;
       padding: 6px 12px;
       cursor: pointer;
       font-size: 0.85rem;
       border: 1px solid var(--border);
     }
-    .preset-btn { background: #10182d; color: var(--text); }
-    .secondary { background: #1a2645; color: var(--text); }
-    .ghost { background: transparent; color: var(--muted); }
 
-    /* Stats & Output area */
-    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-top: 12px; }
-    .stat { padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: rgba(13, 20, 39, 0.88); text-align: center; }
-    .stat .label { color: var(--muted); font-size: 0.8rem; margin-bottom: 4px; }
-    .stat .num { font-size: 1.2rem; font-weight: 800; color: var(--text); }
-    .stat .num.good { color: var(--good); }
-    .stat .num.warn { color: var(--warn); }
-    .stat .num.bad { color: var(--bad); }
+    .preset-btn {
+      background: #10182d;
+      color: var(--text);
+    }
 
-    .tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-    .tab-btn { background: #10182d; color: var(--muted); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; cursor: pointer; }
-    .tab-btn.active { background: rgba(79,124,255,0.18); color: var(--text); border-color: var(--accent); }
-    
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    .secondary {
+      background: #1a2645;
+      color: var(--text);
+    }
+
+    .ghost {
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stat {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(13, 20, 39, 0.88);
+      text-align: center;
+      min-width: 0;
+    }
+
+    .stat .label {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+
+    .stat .num {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .stat .num.good {
+      color: var(--good);
+    }
+
+    .stat .num.warn {
+      color: var(--warn);
+    }
+
+    .stat .num.bad {
+      color: var(--bad);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: #10182d;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: rgba(79,124,255,0.18);
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    .tab-panel {
+      display: none;
+      min-width: 0;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
 
     .diff {
       white-space: pre-wrap;
       word-break: break-word;
+      overflow-wrap: anywhere;
       background: #0d1427;
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 16px;
       min-height: 250px;
+      width: 100%;
+      min-width: 0;
     }
-    .diff ins { background: rgba(110, 231, 183, 0.18); color: #d8fff1; text-decoration: none; border-radius: 4px; padding: 0 2px; }
-    .diff del { background: rgba(251, 191, 36, 0.12); color: #ffd88a; text-decoration: line-through; border-radius: 4px; padding: 0 2px; }
 
-    .flags { display: grid; gap: 10px; }
-    .flag { padding: 12px; border-radius: 10px; background: rgba(13, 20, 39, 0.82); border: 1px solid var(--border); font-size: 0.9rem; }
-    .flag strong { display: block; margin-bottom: 2px; color: var(--text); }
+    .diff ins {
+      background: rgba(110, 231, 183, 0.18);
+      color: #d8fff1;
+      text-decoration: none;
+      border-radius: 4px;
+      padding: 0 2px;
+    }
 
-    .status-line { margin-top: 10px; color: var(--muted); font-size: 0.85rem; text-align: center; }
+    .diff del {
+      background: rgba(251, 191, 36, 0.12);
+      color: #ffd88a;
+      text-decoration: line-through;
+      border-radius: 4px;
+      padding: 0 2px;
+    }
+
+    .flags {
+      display: grid;
+      gap: 10px;
+    }
+
+    .flag {
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(13, 20, 39, 0.82);
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      min-width: 0;
+    }
+
+    .flag strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--text);
+    }
+
+    .status-line {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    
+
     <div class="topbar">
       <h1>Humaniser</h1>
       <p>Client-side rewriting studio for cleaner prose.</p>
@@ -234,24 +427,24 @@
       <div class="panel-title">
         <h2>Input</h2>
         <div style="display: flex; gap: 10px;">
-            <button class="ghost" id="sampleBtn" type="button">Load Sample</button>
-            <button class="ghost" id="clearBtn" type="button">Clear</button>
+          <button class="ghost" id="sampleBtn" type="button">Load Sample</button>
+          <button class="ghost" id="clearBtn" type="button">Clear</button>
         </div>
       </div>
       <textarea id="inputText" placeholder="Paste text here..."></textarea>
 
       <div class="action-row">
         <select id="modeSelectDummy">
-            <option value="formal">Tone: Formal</option>
-            <option value="business">Tone: Business</option>
-            <option value="academic">Tone: Academic</option>
-            <option value="casual">Tone: Casual</option>
+          <option value="formal">Tone: Formal</option>
+          <option value="business">Tone: Business</option>
+          <option value="academic">Tone: Academic</option>
+          <option value="casual">Tone: Casual</option>
         </select>
         <div id="hiddenModeContainer" style="display: none;">
-            <button class="mode-btn active" data-mode="formal">Formal</button>
-            <button class="mode-btn" data-mode="business">Business</button>
-            <button class="mode-btn" data-mode="academic">Academic</button>
-            <button class="mode-btn" data-mode="casual">Casual</button>
+          <button class="mode-btn active" data-mode="formal">Formal</button>
+          <button class="mode-btn" data-mode="business">Business</button>
+          <button class="mode-btn" data-mode="academic">Academic</button>
+          <button class="mode-btn" data-mode="casual">Casual</button>
         </div>
 
         <button id="humaniseBtn" type="button">Humanise text</button>
@@ -260,89 +453,89 @@
       <details class="advanced">
         <summary>Advanced Options & API Settings</summary>
         <div class="advanced-grid">
-            
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                <div class="control-group">
-                    <div style="display: flex; justify-content: space-between;">
-                        <strong>Presets</strong>
-                        <button class="ghost" id="resetDefaultsBtn" style="padding: 2px 6px; font-size: 0.75rem;">Reset</button>
-                    </div>
-                    <select id="presetSelect">
-                        <option value="default">Default</option>
-                        <option value="light">Light touch</option>
-                        <option value="aggressive">Aggressive cleanup</option>
-                        <option value="board">Board memo</option>
-                    </select>
-                    <div class="preset-row">
-                        <button class="preset-btn" id="savePresetBtn" type="button">Save current</button>
-                        <button class="preset-btn" id="loadSavedBtn" type="button">Load saved</button>
-                    </div>
-                </div>
 
-                <hr style="border: 0; border-top: 1px solid var(--border); margin: 5px 0; width: 100%;">
-
-                <div class="control-group">
-                    <label for="plainness">Plainness: <span id="plainnessVal">72</span>%</label>
-                    <input id="plainness" type="range" min="0" max="100" value="72" />
-                </div>
-                <div class="control-group">
-                    <label for="hype">Hype reduction: <span id="hypeVal">80</span>%</label>
-                    <input id="hype" type="range" min="0" max="100" value="80" />
-                </div>
-                <div class="control-group">
-                    <label for="variation">Sentence variation: <span id="variationVal">62</span>%</label>
-                    <input id="variation" type="range" min="0" max="100" value="62" />
-                </div>
-                <div class="control-group">
-                    <label for="specificity">Specificity push: <span id="specificityVal">58</span>%</label>
-                    <input id="specificity" type="range" min="0" max="100" value="58" />
-                </div>
-                <div class="control-group">
-                    <label for="formal">Formal tone: <span id="formalVal">68</span>%</label>
-                    <input id="formal" type="range" min="0" max="100" value="68" />
-                </div>
-                
-                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
-                    <label class="toggle"><input id="flagWeakSpots" type="checkbox" checked /> Flag weak spots</label>
-                    <label class="toggle"><input id="showDiff" type="checkbox" checked /> Show change view</label>
-                    <label class="toggle"><input id="preserveParagraphs" type="checkbox" checked /> Preserve paragraphs</label>
-                </div>
+          <div style="display: flex; flex-direction: column; gap: 12px; min-width: 0;">
+            <div class="control-group">
+              <div style="display: flex; justify-content: space-between;">
+                <strong>Presets</strong>
+                <button class="ghost" id="resetDefaultsBtn" style="padding: 2px 6px; font-size: 0.75rem;">Reset</button>
+              </div>
+              <select id="presetSelect">
+                <option value="default">Default</option>
+                <option value="light">Light touch</option>
+                <option value="aggressive">Aggressive cleanup</option>
+                <option value="board">Board memo</option>
+              </select>
+              <div class="preset-row">
+                <button class="preset-btn" id="savePresetBtn" type="button">Save current</button>
+                <button class="preset-btn" id="loadSavedBtn" type="button">Load saved</button>
+              </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                <div class="control-group">
-                    <label class="toggle" style="font-weight: bold; color: var(--text);">
-                        <input id="useAIRoute" type="checkbox" /> Use OpenRouter AI rewrite
-                    </label>
-                </div>
-                <div class="control-group">
-                    <label for="workerEndpoint">Worker endpoint</label>
-                    <input id="workerEndpoint" type="text" placeholder="https://..." />
-                </div>
-                <div class="control-group">
-                    <label for="providerSelect">Provider</label>
-                    <select id="providerSelect"><option value="openrouter">OpenRouter</option></select>
-                </div>
-                <div class="control-group">
-                    <label for="modelSelect">Free model</label>
-                    <select id="modelSelect">
-                        <option value="openrouter/free">openrouter/free</option>
-                        <option value="meta-llama/llama-3.2-3b-instruct:free">meta-llama/llama-3.2-3b-instruct:free</option>
-                        <option value="deepseek/deepseek-r1:free">deepseek/deepseek-r1:free</option>
-                        <option value="qwen/qwen-2.5-7b-instruct:free">qwen/qwen-2.5-7b-instruct:free</option>
-                        <option value="stepfun/step-3.5-flash:free">stepfun/step-3.5-flash:free</option>
-                    </select>
-                    <button class="preset-btn" id="refreshModelsBtn" type="button" style="margin-top: 5px;">Refresh free list</button>
-                    <p class="small" id="modelHelp" style="margin:5px 0 0;">Default is openrouter/free.</p>
-                </div>
-                
-                <div class="control-group" style="margin-top: 15px;">
-                    <strong>Live Input Diagnostics</strong>
-                    <div id="flagList" class="flags" style="margin-top: 5px;">
-                        <div class="flag"><span class="muted">Run rewrite or start typing.</span></div>
-                    </div>
-                </div>
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 5px 0; width: 100%;">
+
+            <div class="control-group">
+              <label for="plainness">Plainness: <span id="plainnessVal">72</span>%</label>
+              <input id="plainness" type="range" min="0" max="100" value="72" />
             </div>
+            <div class="control-group">
+              <label for="hype">Hype reduction: <span id="hypeVal">80</span>%</label>
+              <input id="hype" type="range" min="0" max="100" value="80" />
+            </div>
+            <div class="control-group">
+              <label for="variation">Sentence variation: <span id="variationVal">62</span>%</label>
+              <input id="variation" type="range" min="0" max="100" value="62" />
+            </div>
+            <div class="control-group">
+              <label for="specificity">Specificity push: <span id="specificityVal">58</span>%</label>
+              <input id="specificity" type="range" min="0" max="100" value="58" />
+            </div>
+            <div class="control-group">
+              <label for="formal">Formal tone: <span id="formalVal">68</span>%</label>
+              <input id="formal" type="range" min="0" max="100" value="68" />
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+              <label class="toggle"><input id="flagWeakSpots" type="checkbox" checked /> Flag weak spots</label>
+              <label class="toggle"><input id="showDiff" type="checkbox" checked /> Show change view</label>
+              <label class="toggle"><input id="preserveParagraphs" type="checkbox" checked /> Preserve paragraphs</label>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px; min-width: 0;">
+            <div class="control-group">
+              <label class="toggle" style="font-weight: bold; color: var(--text);">
+                <input id="useAIRoute" type="checkbox" /> Use OpenRouter AI rewrite
+              </label>
+            </div>
+            <div class="control-group">
+              <label for="workerEndpoint">Worker endpoint</label>
+              <input id="workerEndpoint" type="text" placeholder="https://..." />
+            </div>
+            <div class="control-group">
+              <label for="providerSelect">Provider</label>
+              <select id="providerSelect"><option value="openrouter">OpenRouter</option></select>
+            </div>
+            <div class="control-group">
+              <label for="modelSelect">Free model</label>
+              <select id="modelSelect">
+                <option value="openrouter/free">openrouter/free</option>
+                <option value="meta-llama/llama-3.2-3b-instruct:free">meta-llama/llama-3.2-3b-instruct:free</option>
+                <option value="deepseek/deepseek-r1:free">deepseek/deepseek-r1:free</option>
+                <option value="qwen/qwen-2.5-7b-instruct:free">qwen/qwen-2.5-7b-instruct:free</option>
+                <option value="stepfun/step-3.5-flash:free">stepfun/step-3.5-flash:free</option>
+              </select>
+              <button class="preset-btn" id="refreshModelsBtn" type="button" style="margin-top: 5px;">Refresh free list</button>
+              <p class="small" id="modelHelp" style="margin:5px 0 0;">Default is openrouter/free.</p>
+            </div>
+
+            <div class="control-group" style="margin-top: 15px;">
+              <strong>Live Input Diagnostics</strong>
+              <div id="flagList" class="flags" style="margin-top: 5px;">
+                <div class="flag"><span class="muted">Run rewrite or start typing.</span></div>
+              </div>
+            </div>
+          </div>
 
         </div>
       </details>
@@ -365,7 +558,8 @@
       </div>
       <div class="tab-panel" data-panel="clean">
         <textarea id="outputText" style="min-height: 250px;" placeholder="Humanised text will appear here..."></textarea>
-        <div id="cleanPreview" style="display: none;"></div> </div>
+        <div id="cleanPreview" style="display: none;"></div>
+      </div>
       <div class="tab-panel" data-panel="notes">
         <div id="notesView" class="flags"></div>
       </div>
@@ -460,10 +654,10 @@
     };
 
     $("modeSelectDummy").addEventListener("change", (e) => {
-        const selectedMode = e.target.value;
-        document.querySelectorAll(".mode-btn").forEach(btn => {
-            if (btn.dataset.mode === selectedMode) btn.click();
-        });
+      const selectedMode = e.target.value;
+      document.querySelectorAll(".mode-btn").forEach(btn => {
+        if (btn.dataset.mode === selectedMode) btn.click();
+      });
     });
 
     sliders.forEach((id) => {
@@ -481,11 +675,23 @@
       el.style.color = kind === "error" ? "var(--bad)" : kind === "warn" ? "var(--warn)" : kind === "good" ? "var(--good)" : "var(--muted)";
     }
 
-    function clamp(num, min, max) { return Math.min(Math.max(num, min), max); }
-    function splitSentences(text) { return (text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []).map(s => s.trim()).filter(Boolean); }
-    function countWords(text) { const m = text.trim().match(/\b\w+[’'-]?\w*\b/g); return m ? m.length : 0; }
-    function sentenceCount(text) { return splitSentences(text).length; }
-    
+    function clamp(num, min, max) {
+      return Math.min(Math.max(num, min), max);
+    }
+
+    function splitSentences(text) {
+      return (text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []).map(s => s.trim()).filter(Boolean);
+    }
+
+    function countWords(text) {
+      const m = text.trim().match(/\b\w+[’'-]?\w*\b/g);
+      return m ? m.length : 0;
+    }
+
+    function sentenceCount(text) {
+      return splitSentences(text).length;
+    }
+
     function longestSentenceWords(text) {
       const sentences = splitSentences(text);
       if (!sentences.length) return 0;
@@ -503,7 +709,12 @@
     }
 
     function cleanSpacing(text, preserveParagraphs = true) {
-      let out = text.replace(/[ \t]+/g, " ").replace(/\s+([,.;:!?])/g, "$1").replace(/([,.;:!?])(\S)/g, "$1 $2").replace(/\n +/g, "\n").replace(/[ ]{2,}/g, " ");
+      let out = text
+        .replace(/[ \t]+/g, " ")
+        .replace(/\s+([,.;:!?])/g, "$1")
+        .replace(/([,.;:!?])(\S)/g, "$1 $2")
+        .replace(/\n +/g, "\n")
+        .replace(/[ ]{2,}/g, " ");
       if (preserveParagraphs) out = out.replace(/\n{3,}/g, "\n\n");
       else out = out.replace(/\n+/g, " ");
       return out.trim();
@@ -527,13 +738,18 @@
       out = out.replace(/—/g, mode === "academic" ? ";" : ",");
 
       if (cutTransitions) {
-        out = out.replace(/\bMoreover,\s*/g, ""); out = out.replace(/\bFurthermore,\s*/g, ""); out = out.replace(/\bTherefore,\s*/g, "");
+        out = out.replace(/\bMoreover,\s*/g, "");
+        out = out.replace(/\bFurthermore,\s*/g, "");
+        out = out.replace(/\bTherefore,\s*/g, "");
       }
       if (variation > 45) {
         out = out.replace(/\bThis means that\b/gi, mode === "casual" ? "So" : "This means");
-        out = out.replace(/\bIn many cases,\b/gi, "Often,"); out = out.replace(/\bIn some cases,\b/gi, "Sometimes,");
+        out = out.replace(/\bIn many cases,\b/gi, "Often,");
+        out = out.replace(/\bIn some cases,\b/gi, "Sometimes,");
       }
-      if (variation > 65) { out = out.replace(/\bIt is ([a-z]+) that\b/gi, "It is $1 to note that"); }
+      if (variation > 65) {
+        out = out.replace(/\bIt is ([a-z]+) that\b/gi, "It is $1 to note that");
+      }
       return out;
     }
 
@@ -551,11 +767,19 @@
       const rules = MODE_RULES[mode];
       const formalLevel = Math.max(settings.formal, rules.formalFloor);
 
-      if (mode === "business") { out = out.replace(/\bhelp(s|ed|ing)?\b/gi, "support$1"); out = out.replace(/\btry\b/gi, "seek"); }
-      if (mode === "academic") { out = out.replace(/\bSo\b/g, "Thus"); out = out.replace(/\bshows\b/gi, "indicates"); }
+      if (mode === "business") {
+        out = out.replace(/\bhelp(s|ed|ing)?\b/gi, "support$1");
+        out = out.replace(/\btry\b/gi, "seek");
+      }
+      if (mode === "academic") {
+        out = out.replace(/\bSo\b/g, "Thus");
+        out = out.replace(/\bshows\b/gi, "indicates");
+      }
       if (mode === "casual" || formalLevel < 45 || rules.contractions) {
-        out = out.replace(/\bdo not\b/gi, "don't"); out = out.replace(/\bcannot\b/gi, "can't");
-        out = out.replace(/\bis not\b/gi, "isn't"); out = out.replace(/\bwill not\b/gi, "won't");
+        out = out.replace(/\bdo not\b/gi, "don't");
+        out = out.replace(/\bcannot\b/gi, "can't");
+        out = out.replace(/\bis not\b/gi, "isn't");
+        out = out.replace(/\bwill not\b/gi, "won't");
       }
       return out;
     }
@@ -577,7 +801,9 @@
       return out;
     }
 
-    function escapeHtml(str) { return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
 
     function diffWords(before, after) {
       const a = before.split(/(\s+)/), b = after.split(/(\s+)/);
@@ -590,14 +816,29 @@
         }
       }
 
-      const parts = []; let i = m, j = n;
+      const parts = [];
+      let i = m, j = n;
       while (i > 0 && j > 0) {
-        if (a[i - 1] === b[j - 1]) { parts.push(escapeHtml(a[i - 1])); i--; j--; } 
-        else if (dp[i - 1][j] >= dp[i][j - 1]) { parts.push(`<del>${escapeHtml(a[i - 1])}</del>`); i--; } 
-        else { parts.push(`<ins>${escapeHtml(b[j - 1])}</ins>`); j--; }
+        if (a[i - 1] === b[j - 1]) {
+          parts.push(escapeHtml(a[i - 1]));
+          i--;
+          j--;
+        } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+          parts.push(`<del>${escapeHtml(a[i - 1])}</del>`);
+          i--;
+        } else {
+          parts.push(`<ins>${escapeHtml(b[j - 1])}</ins>`);
+          j--;
+        }
       }
-      while (i > 0) { parts.push(`<del>${escapeHtml(a[i - 1])}</del>`); i--; }
-      while (j > 0) { parts.push(`<ins>${escapeHtml(b[j - 1])}</ins>`); j--; }
+      while (i > 0) {
+        parts.push(`<del>${escapeHtml(a[i - 1])}</del>`);
+        i--;
+      }
+      while (j > 0) {
+        parts.push(`<ins>${escapeHtml(b[j - 1])}</ins>`);
+        j--;
+      }
       return parts.reverse().join("");
     }
 
@@ -619,10 +860,16 @@
 
     function renderFlags(text) {
       const wrap = $("flagList");
-      if (!$("flagWeakSpots").checked) { wrap.innerHTML = `<div class="flag"><span class="muted">Turn on “Flag weak spots” to inspect input.</span></div>`; return; }
+      if (!$("flagWeakSpots").checked) {
+        wrap.innerHTML = `<div class="flag"><span class="muted">Turn on “Flag weak spots” to inspect input.</span></div>`;
+        return;
+      }
 
       const flags = getFlags(text);
-      if (!flags.length) { wrap.innerHTML = `<div class="flag"><span class="muted">No obvious stock patterns were found.</span></div>`; return; }
+      if (!flags.length) {
+        wrap.innerHTML = `<div class="flag"><span class="muted">No obvious stock patterns were found.</span></div>`;
+        return;
+      }
 
       wrap.innerHTML = flags.map(f => `<div class="flag"><strong>${escapeHtml(f.title)}</strong><span class="muted">${escapeHtml(f.detail)}</span></div>`).join("");
     }
@@ -643,30 +890,50 @@
     function currentSettings() {
       return {
         mode: document.querySelector(".mode-btn.active")?.dataset.mode || DEFAULTS.mode,
-        plainness: Number($("plainness").value), hype: Number($("hype").value), variation: Number($("variation").value),
-        specificity: Number($("specificity").value), formal: Number($("formal").value),
-        flagWeakSpots: $("flagWeakSpots").checked, showDiff: $("showDiff").checked, preserveParagraphs: $("preserveParagraphs").checked,
-        useAIRoute: $("useAIRoute").checked, workerEndpoint: $("workerEndpoint").value.trim(),
-        provider: $("providerSelect").value, model: $("modelSelect").value
+        plainness: Number($("plainness").value),
+        hype: Number($("hype").value),
+        variation: Number($("variation").value),
+        specificity: Number($("specificity").value),
+        formal: Number($("formal").value),
+        flagWeakSpots: $("flagWeakSpots").checked,
+        showDiff: $("showDiff").checked,
+        preserveParagraphs: $("preserveParagraphs").checked,
+        useAIRoute: $("useAIRoute").checked,
+        workerEndpoint: $("workerEndpoint").value.trim(),
+        provider: $("providerSelect").value,
+        model: $("modelSelect").value
       };
     }
 
     function applySettings(settings) {
-      sliders.forEach((id) => { $(id).value = settings[id]; $(id + "Val").textContent = settings[id]; });
-      $("flagWeakSpots").checked = settings.flagWeakSpots; $("showDiff").checked = settings.showDiff; $("preserveParagraphs").checked = settings.preserveParagraphs;
-      $("useAIRoute").checked = settings.useAIRoute ?? DEFAULTS.useAIRoute; $("workerEndpoint").value = settings.workerEndpoint || DEFAULTS.workerEndpoint;
-      $("providerSelect").value = settings.provider || DEFAULTS.provider; $("modelSelect").value = settings.model || DEFAULTS.model;
+      sliders.forEach((id) => {
+        $(id).value = settings[id];
+        $(id + "Val").textContent = settings[id];
+      });
+      $("flagWeakSpots").checked = settings.flagWeakSpots;
+      $("showDiff").checked = settings.showDiff;
+      $("preserveParagraphs").checked = settings.preserveParagraphs;
+      $("useAIRoute").checked = settings.useAIRoute ?? DEFAULTS.useAIRoute;
+      $("workerEndpoint").value = settings.workerEndpoint || DEFAULTS.workerEndpoint;
+      $("providerSelect").value = settings.provider || DEFAULTS.provider;
+      $("modelSelect").value = settings.model || DEFAULTS.model;
 
       document.querySelectorAll(".mode-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.mode === settings.mode));
       $("modeSelectDummy").value = settings.mode;
       updateModelHelp();
     }
 
-    function saveSettings() { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentSettings())); }
+    function saveSettings() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentSettings()));
+    }
 
     function loadSavedSettings() {
-      try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : null; } 
-      catch { return null; }
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : null;
+      } catch {
+        return null;
+      }
     }
 
     function updateLiveInputStats() {
@@ -680,41 +947,76 @@
     }
 
     function updateModelHelp() {
-      const model = $("modelSelect").value, useAI = $("useAIRoute").checked, endpoint = $("workerEndpoint").value.trim(), help = $("modelHelp");
-      if (!useAI) { help.innerHTML = `AI rewrite is off. Local rule-based humaniser is active.`; return; }
-      if (!endpoint) { help.innerHTML = `AI rewrite is on, but no Worker endpoint is set.`; return; }
-      help.innerHTML = model === "openrouter/free" ? `Using <code>openrouter/free</code> (auto routing).` : `Using pinned free model <code>${escapeHtml(model)}</code>.`;
+      const model = $("modelSelect").value,
+            useAI = $("useAIRoute").checked,
+            endpoint = $("workerEndpoint").value.trim(),
+            help = $("modelHelp");
+      if (!useAI) {
+        help.innerHTML = `AI rewrite is off. Local rule-based humaniser is active.`;
+        return;
+      }
+      if (!endpoint) {
+        help.innerHTML = `AI rewrite is on, but no Worker endpoint is set.`;
+        return;
+      }
+      help.innerHTML = model === "openrouter/free"
+        ? `Using <code>openrouter/free</code> (auto routing).`
+        : `Using pinned free model <code>${escapeHtml(model)}</code>.`;
     }
 
     async function refreshOpenRouterModels() {
-      const btn = $("refreshModelsBtn"), select = $("modelSelect"), current = select.value;
+      const btn = $("refreshModelsBtn"),
+            select = $("modelSelect"),
+            current = select.value;
       const fallback = Array.from(select.options).map(o => ({ id: o.value, name: o.textContent }));
 
-      btn.textContent = "Refreshing..."; btn.disabled = true; setStatus("Refreshing free model list...");
+      btn.textContent = "Refreshing...";
+      btn.disabled = true;
+      setStatus("Refreshing free model list...");
 
       try {
         const res = await fetch(OPENROUTER_MODELS_URL);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        const freeModels = (data.data || []).map(i => i.id).filter(id => typeof id === "string" && (id === "openrouter/free" || id.endsWith(":free"))).sort((a, b) => a.localeCompare(b));
+        const freeModels = (data.data || [])
+          .map(i => i.id)
+          .filter(id => typeof id === "string" && (id === "openrouter/free" || id.endsWith(":free")))
+          .sort((a, b) => a.localeCompare(b));
         const modelIds = ["openrouter/free", ...freeModels.filter(id => id !== "openrouter/free")];
-        
+
         select.innerHTML = modelIds.map(id => `<option value="${escapeHtml(id)}">${escapeHtml(id)}</option>`).join("");
         select.value = modelIds.includes(current) ? current : "openrouter/free";
-        updateModelHelp(); setStatus("Free model list refreshed.", "good");
+        updateModelHelp();
+        setStatus("Free model list refreshed.", "good");
       } catch (err) {
         select.innerHTML = fallback.map(item => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.name)}</option>`).join("");
-        select.value = current; $("modelHelp").innerHTML = `Could not refresh live list. Fallback used.`; setStatus(`Could not refresh list: ${err.message}`, "warn");
+        select.value = current;
+        $("modelHelp").innerHTML = `Could not refresh live list. Fallback used.`;
+        setStatus(`Could not refresh list: ${err.message}`, "warn");
       } finally {
-        btn.textContent = "Refresh free list"; btn.disabled = false; saveSettings();
+        btn.textContent = "Refresh free list";
+        btn.disabled = false;
+        saveSettings();
       }
     }
 
     async function rewriteViaWorker(input, settings) {
       if (!settings.workerEndpoint) throw new Error("No Worker endpoint set.");
       const res = await fetch(settings.workerEndpoint, {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: input, model: settings.model, mode: settings.mode, controls: { plainness: settings.plainness, hype: settings.hype, variation: settings.variation, specificity: settings.specificity, formal: settings.formal } })
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: input,
+          model: settings.model,
+          mode: settings.mode,
+          controls: {
+            plainness: settings.plainness,
+            hype: settings.hype,
+            variation: settings.variation,
+            specificity: settings.specificity,
+            formal: settings.formal
+          }
+        })
       });
       if (!res.ok) throw new Error(await res.text() || `Worker error: ${res.status}`);
       return res.json();
@@ -724,14 +1026,19 @@
       const input = $("inputText").value;
       const settings = currentSettings();
 
-      if (!input.trim()) { setStatus("Paste some text first.", "warn"); return; }
+      if (!input.trim()) {
+        setStatus("Paste some text first.", "warn");
+        return;
+      }
 
       const before = scoreAiTics(input);
       let output = humanise(input, settings), extraNotes = [];
 
       if (settings.useAIRoute) {
         try {
-          $("humaniseBtn").disabled = true; $("humaniseBtn").textContent = "Humanising..."; setStatus("Calling Worker proxy...");
+          $("humaniseBtn").disabled = true;
+          $("humaniseBtn").textContent = "Humanising...";
+          setStatus("Calling Worker proxy...");
           const data = await rewriteViaWorker(input, settings);
           if (data && typeof data.output === "string" && data.output.trim()) output = data.output.trim();
           if (Array.isArray(data?.notes)) extraNotes = data.notes;
@@ -740,21 +1047,26 @@
           extraNotes = [`AI rewrite failed. Local rewrite used. ${err.message}`];
           setStatus(`AI rewrite failed. Local rewrite used.`, "warn");
         } finally {
-          $("humaniseBtn").disabled = false; $("humaniseBtn").textContent = "Humanise text";
+          $("humaniseBtn").disabled = false;
+          $("humaniseBtn").textContent = "Humanise text";
         }
       } else {
         setStatus("Local rewrite completed.", "good");
       }
 
       const after = scoreAiTics(output), delta = before - after;
-      $("outputText").value = output; $("scoreBefore").textContent = before; $("scoreAfter").textContent = after;
+      $("outputText").value = output;
+      $("scoreBefore").textContent = before;
+      $("scoreAfter").textContent = after;
       $("scoreDelta").textContent = delta >= 0 ? `-${delta}` : `+${Math.abs(delta)}`;
       $("wordCount").textContent = countWords(output);
       $("editCount").textContent = Math.max(0, Math.abs(countWords(input) - countWords(output)) + Math.max(0, delta));
 
       $("diffView").innerHTML = settings.showDiff && output ? diffWords(input, output) : `<span class="muted">Change view hidden.</span>`;
       $("cleanPreview").textContent = output || "No output yet.";
-      renderNotes(input, output, extraNotes); updateModelHelp(); saveSettings();
+      renderNotes(input, output, extraNotes);
+      updateModelHelp();
+      saveSettings();
     }
 
     function setActiveTab(tab) {
@@ -763,6 +1075,7 @@
     }
 
     document.querySelectorAll(".tab-btn").forEach(btn => btn.addEventListener("click", () => setActiveTab(btn.dataset.tab)));
+
     document.querySelectorAll(".mode-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
@@ -774,58 +1087,102 @@
 
     $("presetSelect").addEventListener("change", () => {
       const preset = PRESETS[$("presetSelect").value] || PRESETS.default;
-      applySettings(preset); updateLiveInputStats(); saveSettings(); setStatus(`Preset loaded: ${$("presetSelect").value}.`);
+      applySettings(preset);
+      updateLiveInputStats();
+      saveSettings();
+      setStatus(`Preset loaded: ${$("presetSelect").value}.`);
     });
 
     $("savePresetBtn").addEventListener("click", () => {
-      saveSettings(); const old = $("savePresetBtn").textContent; $("savePresetBtn").textContent = "Saved";
-      setStatus("Settings saved.", "good"); setTimeout(() => $("savePresetBtn").textContent = old, 1200);
+      saveSettings();
+      const old = $("savePresetBtn").textContent;
+      $("savePresetBtn").textContent = "Saved";
+      setStatus("Settings saved.", "good");
+      setTimeout(() => $("savePresetBtn").textContent = old, 1200);
     });
 
     $("loadSavedBtn").addEventListener("click", () => {
       const saved = loadSavedSettings();
-      if (!saved) { setStatus("No saved settings found.", "warn"); return; }
-      applySettings(saved); updateLiveInputStats(); setStatus("Saved settings loaded.", "good");
+      if (!saved) {
+        setStatus("No saved settings found.", "warn");
+        return;
+      }
+      applySettings(saved);
+      updateLiveInputStats();
+      setStatus("Saved settings loaded.", "good");
     });
 
     $("resetDefaultsBtn").addEventListener("click", () => {
-      applySettings(DEFAULTS); $("presetSelect").value = "default"; updateLiveInputStats(); saveSettings(); setStatus("Defaults restored.");
+      applySettings(DEFAULTS);
+      $("presetSelect").value = "default";
+      updateLiveInputStats();
+      saveSettings();
+      setStatus("Defaults restored.");
     });
 
     $("humaniseBtn").addEventListener("click", runHumanise);
+
     $("sampleBtn").addEventListener("click", () => {
       $("inputText").value = `The project stands as a testament to the team’s innovative spirit, marking a pivotal moment in the evolving landscape of digital collaboration. It is not just a workflow update, but also a broader shift that underscores the importance of adaptive thinking. Moreover, the initiative highlights the organization’s commitment to excellence and serves as a reminder that strategic alignment plays a crucial role in shaping future outcomes.`;
-      updateLiveInputStats(); runHumanise();
+      updateLiveInputStats();
+      runHumanise();
     });
 
     $("copyBtn").addEventListener("click", async () => {
       const text = $("outputText").value;
-      if (!text) { setStatus("Nothing to copy yet.", "warn"); return; }
+      if (!text) {
+        setStatus("Nothing to copy yet.", "warn");
+        return;
+      }
       try {
-        await navigator.clipboard.writeText(text); const old = $("copyBtn").textContent; $("copyBtn").textContent = "Copied";
-        setStatus("Copied to clipboard.", "good"); setTimeout(() => $("copyBtn").textContent = old, 1200);
-      } catch { setStatus("Clipboard copy failed.", "warn"); }
+        await navigator.clipboard.writeText(text);
+        const old = $("copyBtn").textContent;
+        $("copyBtn").textContent = "Copied";
+        setStatus("Copied to clipboard.", "good");
+        setTimeout(() => $("copyBtn").textContent = old, 1200);
+      } catch {
+        setStatus("Clipboard copy failed.", "warn");
+      }
     });
 
     $("clearBtn").addEventListener("click", () => {
-      $("inputText").value = ""; $("outputText").value = ""; $("diffView").innerHTML = ""; $("cleanPreview").textContent = "";
-      $("notesView").innerHTML = ""; ["inputWords", "inputSentences", "scoreBefore", "scoreAfter", "scoreDelta", "wordCount", "editCount", "longestSentence"].forEach(id => $(id).textContent = "0");
-      renderFlags(""); setStatus("Cleared.");
+      $("inputText").value = "";
+      $("outputText").value = "";
+      $("diffView").innerHTML = "";
+      $("cleanPreview").textContent = "";
+      $("notesView").innerHTML = "";
+      ["inputWords", "inputSentences", "scoreBefore", "scoreAfter", "scoreDelta", "wordCount", "editCount", "longestSentence"].forEach(id => $(id).textContent = "0");
+      renderFlags("");
+      setStatus("Cleared.");
     });
 
     $("inputText").addEventListener("input", updateLiveInputStats);
     $("flagWeakSpots").addEventListener("change", updateLiveInputStats);
-    $("showDiff").addEventListener("change", saveSettings); $("preserveParagraphs").addEventListener("change", saveSettings);
-    $("useAIRoute").addEventListener("change", () => { updateModelHelp(); saveSettings(); });
-    $("workerEndpoint").addEventListener("input", () => { updateModelHelp(); saveSettings(); });
+    $("showDiff").addEventListener("change", saveSettings);
+    $("preserveParagraphs").addEventListener("change", saveSettings);
+    $("useAIRoute").addEventListener("change", () => {
+      updateModelHelp();
+      saveSettings();
+    });
+    $("workerEndpoint").addEventListener("input", () => {
+      updateModelHelp();
+      saveSettings();
+    });
     $("providerSelect").addEventListener("change", saveSettings);
-    $("modelSelect").addEventListener("change", () => { updateModelHelp(); saveSettings(); });
+    $("modelSelect").addEventListener("change", () => {
+      updateModelHelp();
+      saveSettings();
+    });
     $("refreshModelsBtn").addEventListener("click", refreshOpenRouterModels);
 
     (function init() {
       const saved = loadSavedSettings();
       applySettings(saved || DEFAULTS);
-      renderFlags(""); updateLiveInputStats(); updateModelHelp(); setActiveTab("diff"); setStatus("Ready.");
+      renderFlags("");
+      updateLiveInputStats();
+      updateModelHelp();
+      setActiveTab("diff");
+      setStatus("Ready.");
     })();
   </script>
 </body>
